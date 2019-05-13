@@ -1,0 +1,126 @@
+# Gabriel Filipe Manso Araujo - 16/0121019
+
+# FAC: TRABALHO 03 - QUESTAO BIT PARIDADE
+
+
+	.data
+
+	WRONG_OUTPUT: .asciiz "entrada incorreta\n"
+	BIT_PAIR: .asciiz "bit-paridade: "
+	OUTPUT: .asciiz "\nsaida: "
+	new_line: .asciiz "\n"
+	
+	.text
+
+main:
+
+#======================= LEITURA DO VALOR DE ENTRADA
+
+	li $v0, 5		
+	syscall
+	
+	move $t0, $v0			# ENTRADA = $t0
+	move $s0, $v0			# ENTRADA = $s0
+	
+#======================= CONDIÇÃO DE EXISTENCIA
+	
+	bge  $s0, 128, ERROR		# s0 >= 128, go to ERROR
+
+#======================= PARÂMETROS DO LAÇO
+
+	li $t7, 7			#$t7 = condicao de parada
+	li $t6, 0			#$t6 = i
+	
+#======================= LAÇO
+
+LOOP: 
+
+	beq $t7, $zero, CALCULUS	# t7 == 0, go to CALCULUS
+	rem $t3, $t0, 2			# t3 = t0 % 2
+	beq $t3, $zero, BIT_0		# t3 == 0, go to BIT_0
+	add $t6, $t6, 1			# t3 == 1, i++
+	
+#======================= CONDICAO BIT O
+
+BIT_0:
+	srl $t0, $t0, 1			# SHIFT RIGHT 1 em $t0
+	sub $t7, $t7, 1			# $t7 -= 1
+	j LOOP	
+	
+#======================= CALCULO DO ALGORITMO
+	
+CALCULUS:
+
+	rem $t5, $t6, 2			# t5 = t2%2
+	beqz $t5, EVEN			# t5 == 0, go to EVEN
+	
+#======================= SE IMPAR			
+		
+#ODD:
+	
+	li $v0, 4			
+	la $a0, BIT_PAIR
+	syscall
+	
+	li $v0, 1		
+	li $a0, 1			# PRINT BIT PARIDADE IGUAL A 1
+	syscall
+	
+	addi  $t4, $s0, 128		# t4 = ENTRADA + 128
+	
+	li $v0, 4			
+	la $a0, OUTPUT
+	syscall
+	
+	li $v0, 1			# PRINT $t4 
+	move $a0, $t4
+	syscall
+	
+	li $v0, 4			
+	la $a0, new_line
+	syscall
+	
+#======================= FIM DO PROGRAMA	
+	
+	li $v0, 10			
+	syscall
+	
+#======================= SE PAR
+		
+EVEN: 
+	li $v0, 4			
+	la $a0, BIT_PAIR
+	syscall
+	
+	li $v0, 1	
+	li $a0, 0			# PRINT BIT PARIDADE IGUAL A 0
+	syscall
+	
+	li $v0, 4		
+	la $a0, OUTPUT
+	syscall
+	
+	li $v0, 1			# PRINT ENTRADA
+	move $a0, $s0
+	syscall
+	
+	li $v0, 4		
+	la $a0, new_line
+	syscall
+	
+#======================= FIM DO PROGRAMA
+
+	li $v0, 10		
+	syscall		
+
+#======================= CONDICAO DE ERRO	
+		
+ERROR:
+	li $v0, 4		
+	la $a0, WRONG_OUTPUT
+	syscall
+	
+#======================= FIM DO PROGRAMA
+
+	li $v0, 10		
+	syscall
