@@ -209,23 +209,7 @@ MULT_S:
 	
 RESULT_S:
 
-	move   $a0, $t2      	 
-	li   $v0, 1           	
-      	syscall               	               	
-	
-	la   $a0, new_line  
-      	li   $v0, 4		
-      	syscall  
-
 	mul $t2,$t2,-1
-	
-	move   $a0, $t2      	 
-	li   $v0, 1           	
-      	syscall               	               	
-	
-	la   $a0, new_line  
-      	li   $v0, 4		
-      	syscall  
 	
 	mul $t7,$t7,-1
 	
@@ -386,4 +370,3 @@ ERRO:
       	
       	li $v0, 10            
 	syscall
-      	  
