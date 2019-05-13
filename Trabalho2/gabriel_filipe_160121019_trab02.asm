@@ -109,14 +109,15 @@ divfac:
 	sw $s1, 4 ($sp)
 	sw $s0, 0 ($sp)
 	
-
+	beq $s1,$zero,ERRO
+	
 	slt $t3,$s0,$zero
-	bne $t3,$zero,ERRO
+	bne $t3,$zero,MULT_S
+	add  $t6,$s0,$zero
 	
 	
-#PASSO_1:
-
-	add  $t6,$s0,$zero  	
+PASSO_1:
+	
 	addi $t4,$t4,8		#Contador = 1
 	
 #PASSO_2: 
@@ -176,6 +177,11 @@ PASSO_4.1:
 PASSO_6:
 
 	srl  $t7,$t7,1		#SRL 1bit no Hi(RESTO)
+	
+	bltz $s0,RESULT_S
+	
+MOVE_TO_LO_HI:
+	
 	mtlo $t2
 	mthi $t7
 	
@@ -184,6 +190,37 @@ PASSO_6:
 	addi $sp, $sp, 8
 	
 	jr   $ra
+	
+MULT_S:
+
+	mul $t6,$s0,-1
+	
+	j PASSO_1
+	
+RESULT_S:
+
+	move   $a0, $t2      	 
+	li   $v0, 1           	
+      	syscall               	               	
+	
+	la   $a0, new_line  
+      	li   $v0, 4		
+      	syscall  
+
+	mul $t2,$t2,-1
+	
+	move   $a0, $t2      	 
+	li   $v0, 1           	
+      	syscall               	               	
+	
+	la   $a0, new_line  
+      	li   $v0, 4		
+      	syscall  
+	
+	mul $t7,$t7,-1
+	
+	j MOVE_TO_LO_HI
+		
 	
 	
 PRINT:
@@ -324,6 +361,8 @@ ERRO:
       	la   $a0, return   	
       	li   $v0, 4           	
       	syscall    
+      	
+      	addi $t3,$t3,1
       	
       	move   $a0, $t3      	 
 	li   $v0, 1           	
