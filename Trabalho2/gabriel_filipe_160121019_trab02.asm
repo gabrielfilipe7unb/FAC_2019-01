@@ -23,11 +23,21 @@ return:			.asciiz  "Retorno: "
 
 #ENTRADA
 ####Digite o dividendo: -2
-####Digite o divisor: 3
+####Digite o divisor: 0
 
 #SAIDA
-####Impossivel realizar divisao na formula: -2/3
+####Impossivel realizar divisao na formula: -2/0
 ####Retorno: 1
+
+#ENTRADA
+####Digite o dividendo: -7
+####Digite o divisor: 2
+
+#SAIDA
+####Formula: -7/2
+####Formula com o resultado: -7/2 = -3
+####Resto: -1
+####Retorno: 0
 
 #ENTRADA
 ####Digite o dividendo: 0
