@@ -19,13 +19,15 @@ main:
 	syscall	
 	move $s0, $v0
 	
-	sge $t0,$s0,1
+	sgt $t0,$s0,1
 	slt $t2,$s0,$t6
 	bne $t0,$t2,ERROR
 	
 LOOP:
 
-	beq $s0,1,END
+	
+	sgt $t4,$s0,1
+	beq $t4,$zero,END
 	
 	rem $t1,$s0,$t7
 	bne $t1,$zero,ELSE
@@ -53,13 +55,6 @@ ERROR:
 	la   $a0, WRONG_OUTPUT   	
       	li   $v0, 4           	
       	syscall    
-      	
-     	la   $a0, new_line  
-      	li   $v0, 4		
-      	syscall 
-      	
-      	li $v0, 10            
-	syscall
 	
 END:
 
