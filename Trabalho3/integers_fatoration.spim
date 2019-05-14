@@ -1,0 +1,51 @@
+# Gabriel Filipe Manso Araujo - 16/0121019
+
+# FAC: TRABALHO 03 - QUESTAO FATORACAO DE INTEIROS
+
+
+	.data
+
+WRONG_OUTPUT: 	.asciiz "Entrada invalida.\n"
+new_line: 	.asciiz "\n"
+	
+	.text
+
+main:
+
+	li $v0, 5		
+	syscall	
+	move $s0, $v0
+	
+	
+	
+	li $t7,2
+	
+LOOP:
+
+	beq $s0,1,END
+	
+	rem $t1,$s0,$t7
+	bne $t1,$zero,ELSE
+	
+	move   $a0, $t7      	 
+	li   $v0, 1           	
+      	syscall 
+      	
+      	la   $a0, new_line  
+      	li   $v0, 4		
+      	syscall 
+      	
+      	div $s0,$s0,$t7
+      	
+      	j LOOP
+	
+	
+ELSE:
+	addi $t7,$t7,1
+	
+	j LOOP
+	
+END:
+
+	li $v0, 10            
+	syscall
